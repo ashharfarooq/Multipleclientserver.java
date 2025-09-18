@@ -1,26 +1,32 @@
 import java.util.*;
-import java.io.*;
 import java.net.*;
+import java.io.*;
 
 public class Deskclient{
-public static void main(String[] args){
+	public static void main(String[] args){
 try{
-	Socket Client = new Socket("localhost",9090);
-	PrintWriter out = new PrintWriter(Client.getOutputStream(),true);
-	System.out.println("Type something");
 	
+	Socket socket = new Socket("localhost",9090);
+	System.out.println("CONNECTED");
+    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+	PrintWriter out = new PrintWriter(socket.getOutputStream(),true);
 	Scanner s1 = new Scanner(System.in);
 	while(true){
-	String exit = s1.nextLine();
-	out.println("Client says "+ exit);
-	if(exit.equals("exit")){
-		break;
+        
+	String line = s1.nextLine();
+	out.println(line);
+	String message = in.readLine();
+        System.out.println("Server says "+message);
+	
+	if(line.equals("exit")){
+break;
 }
 }
-Client.close();
-}
-catch(IOException e){
+socket.close();	
+s1.close();
+}catch (IOException e){
 e.printStackTrace();
 }
 }
+
 }
